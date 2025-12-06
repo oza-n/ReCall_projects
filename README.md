@@ -145,7 +145,7 @@
 * Docker (開発環境)
 
 ## 画面遷移図
-https://www.figma.com/design/N6pwMyaupAYUUW6bzBakUq/ReCall_MVP.ver?node-id=0-1&p=f&t=VP35OO3E6nvhJ4md-0
+https://www.figma.com/design/N6pwMyaupAYUUW6bzBakUq/ReCall_MVP.ver?node-id=0-1&p=f&t=FZzSZc6d3A3xKuaA-0
 
 ## ER図
 作成中(Mermaid形式で作成予定)
