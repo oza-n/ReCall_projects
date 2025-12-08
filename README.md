@@ -148,4 +148,4 @@
 https://www.figma.com/design/N6pwMyaupAYUUW6bzBakUq/ReCall_MVP.ver?node-id=0-1&p=f&t=FZzSZc6d3A3xKuaA-0
 
 ## ER図
-作成中(Mermaid形式で作成予定)
+[![Image from Gyazo](https://i.gyazo.com/34801346c366fe0a19e2b123db9d907f.png)](https://gyazo.com/34801346c366fe0a19e2b123db9d907f)
