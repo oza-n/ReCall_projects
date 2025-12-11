@@ -13,7 +13,7 @@ services:
     command: bash -c "rm -f tmp/pids/server.pid && bin/dev"
     volumes:
       - .:/app
-      - bundle_data:/user/local/bundle
+      - bundle_data:/usr/local/bundle
       - node_modules:/app/node_modules
     ports:
       - "3000:3000"
@@ -21,8 +21,8 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/app_development
-      stdin_open: true
-      tty: true
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_data:
