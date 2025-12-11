@@ -117,8 +117,8 @@
 ## 使用技術
 
 ### バックエンド
-* Ruby: 3.4.7
-* Ruby on Rails: 8.0
+* Ruby: 3.3.6
+* Ruby on Rails: 7.1.3.4
 
 ### フロントエンド
 * Hotwire (Turobo, Stimulus)
