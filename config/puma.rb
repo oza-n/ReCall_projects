@@ -25,7 +25,7 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # 本番環境の設定
-if ENV.fetch("RAILS_ENV") == "production"
+if ENV.fetch("RAILS_ENV", "development") == "production"
   # ワーカー数を2に固定(Renderの無料プランに最適)
   workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
