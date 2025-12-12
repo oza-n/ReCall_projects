@@ -86,3 +86,4 @@ production:
   database: app_production
   username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
+  url: <%= ENV['DATABASE_URL'] %>
