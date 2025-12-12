@@ -1,13 +1,8 @@
 #!/bin/bash -e
 
-# Enable debugging
-set -x
-
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  echo "Running database preparation..."
   ./bin/rails db:prepare
 fi
 
-echo "Executing command: ${@}"
 exec "${@}"
