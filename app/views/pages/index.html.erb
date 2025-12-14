@@ -55,6 +55,15 @@
           >
             ログイン
           </a>
+              <!-- ユーザー認証状態の表示 -->
+              <% if user_signed_in? %>
+                <p>ログイン中: <%= current_user.email %></p>
+
+                <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete } %>
+              <% else %>
+                <p>ログインしていません</p>
+                <%= link_to "ログイン", new_user_session_path %>
+              <% end %>
         </div>
       </div>
     </section>
