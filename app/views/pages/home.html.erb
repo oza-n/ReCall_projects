@@ -39,22 +39,19 @@
       <div class="bg-white border-t border-slate-200 py-6">
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
           <!-- 新規登録 -->
-          <a
-            href="#"
-            class="px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold
-                   hover:bg-emerald-600 transition"
-          >
-            新規登録
-          </a>
+          <%= link_to "新規登録",
+                  new_user_registration_path,
+                  class: "px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold
+                  hover:bg-emerald-600 transition"
+          %>
 
           <!-- ログイン -->
-          <a
-            href="#"
-            class="px-8 py-4 rounded-xl border border-slate-300 text-slate-700 text-lg font-semibold
-                   hover:bg-slate-100 transition"
-          >
-            ログイン
-          </a>
+          <%= link_to "ログイン",
+                  new_user_session_path,
+                  class: "px-8 py-4 rounded-xl border border-slate-300 text-slate-700 text-lg font-semibold
+                  hover:bg-slate-100 transition"
+          %>
+          </%a>
               <!-- ユーザー認証状態の表示 -->
               <% if user_signed_in? %>
                 <p>ログイン中: <%= current_user.email %></p>
