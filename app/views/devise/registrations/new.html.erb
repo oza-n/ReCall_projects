@@ -1,33 +1,46 @@
-<h1 class="text-2xl font-bold mb-4">新規登録</h1>
+<div class="min-h-screen flex items-center justify-center bg-grey-50 px-4">
+  <div class="w-full max-w-lg md:max-w-xl lg:max-w-2xl bg-white p-8 md:p-10 lg:p-12 rounded-xl shadow-lg">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <h1 class="text-4xl font-bold text-center mb-8 ">
+      新規登録
+    </h1>
 
-  <div class="mb-4">
-    <%= f.label :name, "名前" %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "border p-2 w-full" %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="mb-4">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "border p-2 w-full" %>
+      <div class="mb-4">
+        <%= f.label :name, "名前" %><br />
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "border p-2 w-full" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "border p-2 w-full" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password %>
+        <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "new-password", class: "border p-2 w-full" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "border p-2 w-full" %>
+      </div>
+
+      <!-- ボタン -->
+      <div class="actions">
+        <%= f.submit "新規登録",
+                  class: "w-full bg-blue-600 text-white font-semibold py-3 rounded-lg
+                  hover: bg-blue-700 active:bg-blue-800 transition" %>
+      </div>
+    <% end %>
+
+    <div class="mt-6 text-center text-sm text-gray-600">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-
-  <div class="mb-4">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: "border p-2 w-full" %>
-  </div>
-
-  <div class="mb-4">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "border p-2 w-full" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "新規登録" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
