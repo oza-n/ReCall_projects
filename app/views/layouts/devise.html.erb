@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ReCall</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload', %>
+    <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+  </head>
+
+  <body class="min-h-screen bg-slate-100 flex items-center justify-center">
+    <main class="w-full max-w-md bg-white p-8 rounded-lg shadow">
+      <%= yield %>
+    </main>
+  </body>
+</html>
