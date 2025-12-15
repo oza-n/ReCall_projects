@@ -49,13 +49,10 @@
           <%= link_to "ログイン",
                   new_user_session_path,
                   class: "px-8 py-4 rounded-xl border border-slate-300 text-slate-700 text-lg font-semibold
-                  hover:bg-slate-100 transition"
-          %>
-          </%a>
-              <!-- ユーザー認証状態の表示 -->
+                  hover:bg-slate-100 transition" %>
+              <!-- ユーザー認証状態の表示 ヘッダーに移動の可能性があり -->
               <% if user_signed_in? %>
-                <p>ログイン中: <%= current_user.email %></p>
-
+                <p>ログイン中: <%= current_user.name %></p>
                 <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete } %>
               <% else %>
                 <p>ログインしていません</p>
