@@ -1,0 +1,58 @@
+# 拡張Copを有効化
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+# Ruby / Rails バージョン指定（重要）
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+
+    # ======================================
+# Layout / Style は最初は緩める
+# ======================================
+Layout/LineLength:
+  Max: 160
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# ======================================
+# Rails関連
+# ======================================
+Rails:
+  Enabled: true
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+  # ======================================
+# RSpec関連（最初は厳しくしない）
+# ======================================
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+# ======================================
+# Performance
+# ======================================
+Performance:
+  Enabled: true
