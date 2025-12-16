@@ -4,13 +4,12 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
-=begin    学習一覧ページ後に戻るように変更 pathを学習一覧ページにするようにする
-  def after_sign_in_path_for(resource)
-    pages_home_path
-  end
-=end
+  #    学習一覧ページ後に戻るように変更 pathを学習一覧ページにするようにする
+  #   def after_sign_in_path_for(resource)
+  #     pages_home_path
+  #   end
 
-  def after_sign_out_path_for(resource_or_scope)
+  def after_sign_out_path_for(_resource_or_scope)
     pages_home_path
   end
 
@@ -24,6 +23,6 @@ class ApplicationController < ActionController::Base
   private
 
   def layout_by_resource
-    devise_controller? ? "devise" : "application"
+    devise_controller? ? 'devise' : 'application'
   end
 end
