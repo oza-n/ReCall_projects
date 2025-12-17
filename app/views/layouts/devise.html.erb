@@ -8,21 +8,25 @@
 
     <%= stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
   </head>
 
-  <body class="min-h-screen bg-slate-100 flex items-center justify-center">
-    <header>
-    <nav class="bg-white shadow-md">
-      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div>
-          <a href="/" class="text-2xl font-bold text-gray-800">ReCall</a>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <body class="min-h-screen bg-slate-100 pt-20"> <!-- pt-20で固定ヘッダーの下に余白 -->
 
-  <main class="w-full max-w-md bg-white p-8 rounded-lg shadow">
+    <!-- ヘッダー -->
+    <header class="fixed top-0 left-0 w-full bg-white shadow-md z-10">
+      <div class="container mx-auto px-5 py-4 flex justify-between items-center">
+        <!-- 左：アプリ名 -->
+        <%= link_to "ReCall", root_path, class: "text-xl font-bold text-gray-800" %>
+
+      </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+
+    <main class="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow">
       <%= yield %>
     </main>
+
   </body>
 </html>
