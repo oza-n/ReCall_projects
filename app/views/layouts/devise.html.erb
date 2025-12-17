@@ -11,7 +11,17 @@
   </head>
 
   <body class="min-h-screen bg-slate-100 flex items-center justify-center">
-    <main class="w-full max-w-md bg-white p-8 rounded-lg shadow">
+    <header>
+    <nav class="bg-white shadow-md">
+      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <div>
+          <a href="/" class="text-2xl font-bold text-gray-800">ReCall</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="w-full max-w-md bg-white p-8 rounded-lg shadow">
       <%= yield %>
     </main>
   </body>
