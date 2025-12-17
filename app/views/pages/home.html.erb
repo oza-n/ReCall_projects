@@ -1,65 +1,38 @@
-<!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Learning App</title>
-    <!-- Tailwind CSS (CDN: プロトタイピング用) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="min-h-screen bg-slate-50">
-    <!-- ヒーローセクション（画面全体） -->
-    <section class="min-h-screen flex flex-col">
-      <!-- メイン表示エリア -->
-      <div class="flex-1 flex items-center justify-center px-6">
-        <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <!-- テキストエリア -->
-          <div>
-            <h1 class="text-4xl font-bold text-slate-800 mb-6 leading-tight">
-              学びを、毎日の習慣に
-            </h1>
+<section class="min-h-screen flex flex-col">
+  <!-- メイン表示エリア -->
+  <div class="flex-1 flex items-center justify-center px-6">
+    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <!-- テキストエリア -->
+      <div>
+        <h1 class="text-4xl font-bold text-slate-800 mb-6 leading-tight">
+          学びを、毎日の習慣に
+        </h1>
 
-            <p class="text-slate-600 text-lg mb-8 leading-relaxed">
-              小さな積み重ねが、確かな成長につながります。<br />
-              今日の一歩を、ここから始めましょう。
-            </p>
-          </div>
-
-          <!-- 画像エリア -->
-          <div class="flex justify-center">
-            <img
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644"
-              alt="学習イメージ"
-              class="rounded-2xl shadow-md max-h-[420px] object-cover"
-            />
-          </div>
-        </div>
+        <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+          小さな積み重ねが、確かな成長につながります。<br>
+          今日の一歩を、ここから始めましょう。
+        </p>
       </div>
 
-      <!-- ボタンエリア（画面下部） -->
-      <div class="bg-white border-t border-slate-200 py-6">
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <!-- 新規登録 -->
-          <%= link_to "新規登録",
-                  new_user_registration_path,
-                  class: "px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold
-                  hover:bg-emerald-600 transition"
-          %>
-
-          <!-- ログイン -->
-          <%= link_to "ログイン",
-                  new_user_session_path,
-                  class: "px-8 py-4 rounded-xl border border-slate-300 text-slate-700 text-lg font-semibold
-                  hover:bg-slate-100 transition" %>
-              <!-- ユーザー認証状態の表示 ヘッダーに移動の可能性があり -->
-              <% if user_signed_in? %>
-                <p>ログイン中: <%= current_user.name %></p>
-                <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete } %>
-              <% else %>
-                <p>ログインしていません</p>
-                <%= link_to "ログイン", new_user_session_path %>
-              <% end %>
-        </div>
+      <!-- 画像エリア -->
+      <div class="flex justify-center">
+        <img
+          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644"
+          alt="学習イメージ"
+          class="rounded-2xl shadow-md max-h-[420px] object-cover"
+        >
       </div>
-    </section>
-  </body>
-</html>
+    </div>
+  </div>
+
+  <!-- ボタンエリア -->
+  <div class="bg-white border-t border-slate-200 py-6">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <%= link_to "新規登録", new_user_registration_path,
+                  class: "px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold hover:bg-emerald-600 transition" %>
+
+      <%= link_to "ログイン", new_user_session_path,
+                  class: "px-8 py-4 rounded-xl bg-blue-500 text-white text-lg font-semibold hover:bg-blue-600 transition" %>
+    </div>
+  </div>
+</section>
