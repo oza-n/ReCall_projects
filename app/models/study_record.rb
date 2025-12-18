@@ -5,6 +5,16 @@ class StudyRecord < ApplicationRecord
   #=== 定数 レビューの上限 ===
   MAX_REVIEW_TIMES = 3
 
+  #=== カテゴリを文字列型で管理 ===
+  enum :category, {
+    rails: 'rails',
+    ruby: 'ruby',
+    javascript: 'javascript',
+    css: 'css',
+    html: 'html',
+    other: 'other'
+  }, prefix: true, scopes: true
+
   validates :content, presence: true
   validates :category, presence: true
   validates :studied_at, presence: true
@@ -29,6 +39,8 @@ class StudyRecord < ApplicationRecord
       schedule_next_review
       save!
     end
+
+    true
   end
 
   # === レビュー回数の上限 ===
