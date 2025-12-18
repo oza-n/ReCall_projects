@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
 
-
   resources :study_records do
     member do
       post 'review'

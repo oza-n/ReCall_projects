@@ -27,7 +27,6 @@ class StudyRecord < ApplicationRecord
   scope :need_review, -> { where('next_review_at <= ?', Time.current).where.not(next_review_at: nil) }
   scope :completed_reviews, -> { where(review_count: MAX_REVIEW_TIMES) }
 
-
   # === 公開API（外から呼んでいい操作） ===
 
   def review!
@@ -57,7 +56,6 @@ class StudyRecord < ApplicationRecord
     self.review_count ||= 0
     self.next_review_at ||= initial_review_date
   end
-
 
   # === 復習時の内部処理 ===
   def increment_review_count

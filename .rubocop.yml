@@ -27,6 +27,15 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+  # ======================================
+# Metrics（メトリクス関連）
+# ======================================
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/*'
+    - 'config/routes.rb'
+    - 'spec/**/*'  # RSpecのテストファイルも除外
+
 # ======================================
 # Rails関連
 # ======================================
@@ -35,6 +44,13 @@ Rails:
 
 Rails/HasManyOrHasOneDependent:
   Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false  # マイグレーションの一括変更チェックを無効化
+
+Rails/Exit:
+  Exclude:
+    - 'spec/**/*'  # RSpecファイル内での abort を許可
 
   # ======================================
 # RSpec関連（最初は厳しくしない）
