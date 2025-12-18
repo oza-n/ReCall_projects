@@ -2,45 +2,74 @@ class StudyRecord < ApplicationRecord
   belongs_to :user
   has_many :review_logs, dependent: :destroy
 
+  #=== 定数 レビューの上限 ===
+  MAX_REVIEW_TIMES = 3
+
   validates :content, presence: true
   validates :category, presence: true
   validates :studied_at, presence: true
-  validates :next_review_at, presence: true
   validates :review_count, numericality: { greater_than_or_equal_to: 0 }
   validates :last_reviewed_at, presence: true, if: -> { review_count.positive? }
+  validates :next_review_at, presence: true, unless: :review_complete?
 
-# レコード作成時に初回の復習日を設定するコールバック
+  after_create :initialize_review_schedule
+
+  scope :need_review, -> { where('next_review_at <= ?', Time.current).where.not(next_review_at: nil) }
+  scope :completed_reviews, -> { where(review_count: MAX_REVIEW_TIMES) }
 
 
-  after_create :set_initial_review_date
-# after_update :update_next_review_date, if: :saved_change_to_review_count?
+  # === 公開API（外から呼んでいい操作） ===
 
-# 復習実行時に呼ばれ、復習回数と最終復習日時を更新するメソッド
-  def mark_reviewed!
-    self.review_count += 1
-    self.last_reviewed_at = Time.current
-    save!
-  end
+  def review!
+    return false if review_complete?
 
-  private
-  # 初回の復習日を設定するメソッド
-  def set_initial_review_date
-    update!(
-      review_count: 0,
-      next_review_at: studied_at + 1.day
-    )
-  end
-
-  # レビューの回数に応じて復習する日付を計算するメソッド
-  def calculate_next_review_date
-    case review_count
-    when 0
-      studied_at + 1.day
-    when 1
-      studied_at + 3.days
-    else
-      studied_at + 7.days
+    transaction do
+      increment_review_count
+      record_last_reviewed_at
+      schedule_next_review
+      save!
     end
   end
 
+  # === レビュー回数の上限 ===
+  def review_complete?
+    review_count >= MAX_REVIEW_TIMES
+  end
+
+  private
+
+  # === 初期化 ===
+  def initialize_review_schedule
+    self.review_count = 0
+    self.next_review_at = initial_review_date
+    save!
+  end
+
+
+  # === 復習時の内部処理 ===
+  def increment_review_count
+    self.review_count += 1
+  end
+
+  def record_last_reviewed_at
+    self.last_reviewed_at = Time.current
+  end
+
+  def schedule_next_review
+    self.next_review_at = review_complete? ? nil : next_review_date
+  end
+
+  # === 日付計算（完全に隠蔽） ===
+  def initial_review_date
+    studied_at + 1.day
+  end
+
+  def next_review_date
+    case review_count
+    when 1
+      last_reviewed_at + 3.days
+    when 2
+      last_reviewed_at + 7.days
+    end
+  end
 end
