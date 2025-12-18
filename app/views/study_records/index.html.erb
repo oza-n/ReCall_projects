@@ -1,0 +1,14 @@
+<h1>学習記録一覧</h1>
+
+<div>
+  <%= link_to '学習新規作成', new_study_record_path,
+              class: 'px-4 py-2 bg-blue-500 text-white rounded' %>
+</div>
+
+<ul>
+  <% @study_records.each do |record| %>
+    <li>
+      <%= link_to record.content, study_record_path(record) %>
+    </li>
+  <% end %>
+</ul>
