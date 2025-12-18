@@ -9,10 +9,10 @@ class StudyRecord < ApplicationRecord
   validates :category, presence: true
   validates :studied_at, presence: true
   validates :review_count, numericality: { greater_than_or_equal_to: 0 }
-  validates :last_reviewed_at, presence: true, if: -> { review_count.positive? }
+  validates :last_reviewed_at, presence: true, if: -> { review_count&.positive? }
   validates :next_review_at, presence: true, unless: :review_complete?
 
-  after_create :initialize_review_schedule
+  before_validation :initialize_review_schedule, on: :create
 
   scope :need_review, -> { where('next_review_at <= ?', Time.current).where.not(next_review_at: nil) }
   scope :completed_reviews, -> { where(review_count: MAX_REVIEW_TIMES) }
@@ -40,9 +40,10 @@ class StudyRecord < ApplicationRecord
 
   # === 初期化 ===
   def initialize_review_schedule
-    self.review_count = 0
-    self.next_review_at = initial_review_date
-    save!
+    return unless new_record?
+
+    self.review_count ||= 0
+    self.next_review_at ||= initial_review_date
   end
 
 
