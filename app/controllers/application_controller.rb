@@ -4,13 +4,14 @@ class ApplicationController < ActionController::Base
 
   layout :layout_by_resource
 
-  #    学習一覧ページ後に戻るように変更 pathを学習一覧ページにするようにする
-  #   def after_sign_in_path_for(resource)
-  #     pages_home_path
-  #   end
+  #=== サインイン後のリダイレクト先 ===
+  def after_sign_in_path_for(resource)
+    study_records_path
+  end
 
+  #=== サインアウト後のリダイレクト先 ===
   def after_sign_out_path_for(_resource_or_scope)
-    pages_home_path
+    root_path
   end
 
   protected
