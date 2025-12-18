@@ -10,17 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_17_141400) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_18_080001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "study_records", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.date "studied_at"
-    t.text "content"
-    t.string "category"
+    t.date "studied_at", null: false
+    t.text "content", null: false
+    t.string "category", null: false
     t.date "next_review_at"
-    t.integer "review_count"
+    t.integer "review_count", default: 0, null: false
     t.datetime "last_reviewed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
