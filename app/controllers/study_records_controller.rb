@@ -1,0 +1,2 @@
+class StudyRecordsController < ApplicationController
+end
