@@ -1,96 +1,123 @@
-<div class="max-w-3xl mx-auto px-4 py-8">
-  <!-- タイトル -->
-  <h1 class="text-2xl font-semibold text-slate-800 mb-6">
-    学習記録詳細
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border border-slate-100 p-8 space-y-8">
+
+  <!-- タイトルエリア: カードの外に出し、強調 -->
+  <h1 class="text-2xl md:text-3xl font-bold text-slate-900 border-b pb-4">
+    <%= @study_record.title %>
   </h1>
 
-  <!-- カード -->
-  <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
-
-    <!-- タイトル -->
-    <h2 class="text-lg font-medium text-slate-700">
-      <%= @study_record.title %>
-    </h2>
-
+  <!-- メタ情報 (カテゴリ・学習日) -->
+  <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-slate-600">
     <!-- カテゴリ -->
-    <h2 class="text-lg font-medium text-slate-700">
-      <%= @study_record.category_rails? ? 'Rails' : @study_record.category.humanize %>
-    </h2>
-
-    <!-- 学習日 -->
-    <p class="text-sm text-slate-600">
-      <span class="font-medium text-slate-700">学習日:</span>
-      <%= @study_record.studied_at.strftime('%Y年%m月%d日') %>
+    <p class="flex items-center">
+      <span class="font-medium text-slate-800 mr-2">📚 カテゴリ:</span>
+      <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs font-medium">
+        <%= @study_record.category_rails? ? 'Rails' : @study_record.category.humanize %>
+      </span>
     </p>
 
-    <!-- 学習内容 -->
-    <div>
-      <p class="font-medium text-slate-700 mb-2">学習内容</p>
-      <div class="prose prose-slate max-w-none text-sm">
-        <%= simple_format(@study_record.content) %>
-      </div>
+    <!-- 学習日 -->
+    <p class="flex items-center">
+      <span class="font-medium text-slate-800 mr-2">📅 学習日:</span>
+      <%= @study_record.studied_at.strftime('%Y年%m月%d日') %>
+    </p>
+  </div>
+
+
+  <!-- 学習内容 -->
+  <div class="space-y-4">
+    <h2 class="text-xl font-semibold text-slate-800 border-b pb-2">
+      学習内容
+    </h2>
+
+    <div class="prose prose-slate max-w-none text-base leading-relaxed">
+      <%= simple_format(@study_record.content) %>
     </div>
+  </div>
 
-    <hr class="border-slate-200">
 
-    <!-- 復習情報 -->
-    <div class="space-y-2 text-sm">
+  <!-- 復習情報カード -->
+  <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-slate-800">
+      復習ステータス
+    </h2>
+
+    <!-- 復習回数と最終復習日を横並びに -->
+    <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm">
       <p>
-        <span class="font-medium text-slate-700">復習回数:</span>
+        <span class="font-medium text-slate-800">🔄 復習回数:</span>
         <%= @study_record.review_count %> / <%= StudyRecord::MAX_REVIEW_TIMES %>
       </p>
 
       <% if @study_record.last_reviewed_at.present? %>
         <p>
-          <span class="font-medium text-slate-700">最終復習日:</span>
+          <span class="font-medium text-slate-800">✅ 最終復習日:</span>
           <%= @study_record.last_reviewed_at.strftime('%Y年%m月%d日 %H:%M') %>
-        </p>
-      <% end %>
-
-      <% if @study_record.review_complete? %>
-        <div class="rounded-lg bg-emerald-50 text-emerald-700 px-4 py-3 text-sm">
-          ✅ 復習完了！
-        </div>
-
-      <% elsif @study_record.next_review_at <= Time.current %>
-        <div class="rounded-lg bg-amber-50 text-amber-700 px-4 py-3 text-sm">
-          ⏰ 復習しましょう！
-        </div>
-
-        <%= button_to '復習する',
-              review_study_record_path(@study_record),
-              method: :post,
-              class: "mt-2 inline-flex items-center justify-center rounded-lg bg-slate-800 px-4 py-2 text-white text-sm hover:bg-slate-700 transition" %>
-      <% else %>
-        <p>
-          <span class="font-medium text-slate-700">次回復習予定:</span>
-          <%= @study_record.next_review_at.strftime('%Y年%m月%d日') %>
         </p>
       <% end %>
     </div>
 
-    <hr class="border-slate-200">
+    <!-- ステータス表示とアクションボタン -->
+    <% if @study_record.review_complete? %>
+      <div class="rounded-md bg-emerald-100 text-emerald-700 px-4 py-3 font-semibold flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>復習完了！お疲れ様でした。</span>
+      </div>
 
-    <!-- アクション -->
-    <div class="flex flex-col sm:flex-row gap-3">
-      <%= button_to '復習する',
-            review_study_record_path(@study_record),
-            method: :post,
-            class: "inline-flex justify-center rounded-lg bg-slate-800 px-4 py-2 text-white text-sm hover:bg-slate-700 transition" %>
+    <% elsif @study_record.next_review_at.present? && @study_record.next_review_at <= Time.current %>
+      <div class="rounded-md bg-amber-100 text-amber-700 px-4 py-3 font-semibold flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>⏰ 復習しましょう！</span>
+        </div>
+        
+        <%= button_to '今すぐ復習する',
+              review_study_record_path(@study_record),
+              method: :post,
+              class: "inline-flex justify-center rounded-lg bg-amber-600 px-4 py-2 text-white text-sm font-semibold hover:bg-amber-700 transition shadow-md" %>
+      </div>
+    <% else %>
+      <p class="text-sm text-slate-600">
+        <span class="font-medium text-slate-800">🔜 次回復習予定:</span>
+        <%= @study_record.next_review_at.strftime('%Y年%m月%d日') %>
+      </p>
+    <% end %>
+  </div>
 
+  <!-- アクションボタンエリア (統合) -->
+  <div class="pt-4">
+    <hr class="border-slate-200 mb-4">
+
+    <!-- アクションボタンエリア (復習、編集、削除) -->
+    <!-- モバイルでは縦並び (flex-col)、sm以上で横並び (sm:flex-row) -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-end">
+      
+      <!-- 復習する (プライマリ) -->
+      <!-- 復習情報エリアにボタンがある場合は非表示にするなどのロジックが必要になる場合があります -->
+      <% if !(@study_record.review_complete? || (@study_record.next_review_at.present? && @study_record.next_review_at <= Time.current)) %>
+        <%= button_to '復習する',
+              review_study_record_path(@study_record),
+              method: :post,
+              class: "w-full sm:w-auto inline-flex justify-center rounded-lg bg-slate-800 px-4 py-2 text-white text-sm font-semibold hover:bg-slate-700 transition" %>
+      <% end %>
+    
+      <!-- 編集 (セカンダリ) -->
       <%= link_to '編集',
             edit_study_record_path(@study_record),
-            class: "inline-flex justify-center rounded-lg border border-slate-300 px-4 py-2 text-slate-700 text-sm hover:bg-slate-50 transition" %>
-
+            class: "w-full sm:w-auto inline-flex justify-center rounded-lg border border-slate-300 px-4 py-2 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition" %>
+    
+      <!-- 削除 (デンジャー) -->
       <%= button_to '削除',
             study_record_path(@study_record),
             method: :delete,
             data: { turbo_confirm: 'この学習記録を削除してもよろしいですか？' },
-            class: "inline-flex justify-center rounded-lg border border-red-300 px-4 py-2 text-red-600 text-sm hover:bg-red-50 transition" %>
+            class: "w-full sm:w-auto inline-flex justify-center rounded-lg border border-red-300 px-4 py-2 text-red-600 text-sm font-semibold hover:bg-red-50 transition" %>
+    </div>
 
-      <%= link_to '一覧に戻る',
+    <!-- 一覧に戻るエリア (独立した行に配置) -->
+    <div class="mt-6 text-center">
+      <%= link_to '← 一覧に戻る',
             study_records_path,
-            class: "inline-flex justify-center rounded-lg border border-slate-300 px-4 py-2 text-slate-600 text-sm hover:bg-slate-50 transition" %>
+            class: "inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition" %>
     </div>
   </div>
 </div>

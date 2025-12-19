@@ -1,14 +1,83 @@
-<h1>学習記録一覧</h1>
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <!-- タイトル + 新規作成 -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 border-b pb-4">
+    <h1 class="text-3xl font-bold text-slate-900">
+      学習記録一覧
+    </h1>
+    <%= link_to '＋ 新規作成',
+          new_study_record_path,
+          class: 'inline-flex justify-center items-center rounded-lg bg-blue-600 px-4 py-2 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-md' %>
+  </div>
 
-<div>
-  <%= link_to '学習新規作成', new_study_record_path,
-              class: 'px-4 py-2 bg-blue-500 text-white rounded' %>
+  <!-- 一覧 (グリッドレイアウトに変更) -->
+  <!-- モバイルでは1列、PCでは2列のグリッド -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <% @study_records.each do |record| %>
+      <!-- 各レコードを独立したカードとして扱う -->
+      <%= link_to study_record_path(record), 
+          class: "block bg-white border border-slate-200 rounded-xl shadow-lg hover:shadow-xl hover:border-blue-300 transition duration-300" do %>
+        
+        <div class="p-5 space-y-3">
+          <!-- 上段：タイトル + ステータス -->
+          <div class="flex items-start justify-between gap-3">
+            <!-- タイトル -->
+            <p class="text-lg font-bold text-slate-800 leading-snug">
+              <%= record.title %>
+            </p>
+            
+            <!-- ステータスバッジ -->
+            <% if record.review_complete? %>
+              <span class="flex-shrink-0 inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700">
+                完了
+              </span>
+            <% elsif record.next_review_at.present? && record.next_review_at <= Time.current %>
+              <span class="flex-shrink-0 inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700 animate-pulse">
+                要復習
+              </span>
+            <% else %>
+              <span class="flex-shrink-0 inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+                学習中
+              </span>
+            <% end %>
+          </div>
+
+          <!-- 下段：メタ情報 -->
+          <div class="pt-2 border-t border-slate-100 text-sm text-slate-600 space-y-1">
+            <!-- カテゴリ -->
+            <p class="flex items-center gap-2">
+              <span class="font-medium text-slate-700">📚 カテゴリ:</span>
+              <span class="text-slate-800">
+                <%= record.category_rails? ? 'Rails' : record.category.humanize %>
+              </span>
+            </p>
+            
+            <!-- 日付情報 -->
+            <div class="flex flex-wrap gap-x-4">
+              <p>
+                <span class="font-medium text-slate-700">最終学習日:</span>
+                <%= record.studied_at.strftime('%Y/%m/%d') %>
+              </p>
+              <p>
+                <span class="font-medium text-slate-700">次回復習予定:</span>
+                <span class="<%= record.next_review_at.present? && record.next_review_at <= Time.current ? 'text-red-600 font-bold' : 'text-slate-800' %>">
+                  <%= record.next_review_label %>
+                </span>
+              </p>
+            </div>
+            
+            <!-- 復習回数 -->
+            <p>
+              <span class="font-medium text-slate-700">🔄 復習回数:</span>
+              <%= record.review_count %> / <%= StudyRecord::MAX_REVIEW_TIMES %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <!-- ページネーション -->
+  <div class="mt-8">
+    <%= paginate @study_records, theme: 'tailwind', outer_window: 1, inner_window: 2, left: 2, right: 2 %>
+  </div>
 </div>
-
-<ul>
-  <% @study_records.each do |record| %>
-    <li>
-      <%= link_to record.content, study_record_path(record) %>
-    </li>
-  <% end %>
-</ul>
