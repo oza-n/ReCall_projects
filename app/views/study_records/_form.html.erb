@@ -1,0 +1,30 @@
+<%= form_with model: study_record do |f| %>
+  <% if study_record.errors.any? %>
+    <div>
+      <ul>
+        <% study_record.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :content, '学習内容' %>
+    <%= f.text_field :content %>
+  </div>
+
+  <div>
+    <%= f.label :category, 'カテゴリ' %>
+    <%= f.text_field :category %>
+  </div>
+
+<%# === MVP後にstudied_atを自動セットにする === %>
+<%# 次回はViewを一通り作成しフォームを見やすく記述しやすくする、テストコードを書く %>
+  <div>
+    <%= f.label :studied_at, '学習日' %>
+    <%= f.date_field :studied_at, required: true %>
+  </div>
+
+  <%= f.submit submit_label %>
+<% end %>
