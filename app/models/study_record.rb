@@ -47,6 +47,21 @@ class StudyRecord < ApplicationRecord
     review_count >= MAX_REVIEW_TIMES
   end
 
+  # === 表示用：次回復習日ラベル ===
+  def next_review_label
+    return '復習完了' if review_complete?
+    return '未復習' if review_count.nil?
+
+    next_review_at.strftime('%Y年%m月%d日')
+  end
+
+  def review_status
+    return :complete if review_complete?
+    return :overdue if next_review_at.present? && next_review_at <= Time.current
+
+    :scheduled
+  end
+
   private
 
   # === 初期化 ===
