@@ -44,10 +44,10 @@ ARG RAILS_MASTER_KEY
 ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
 
 # Build Tailwind CSS
-RUN SECRET_KEY_BASE=DUMMY bundle exec rails tailwindcss:build
+RUN SECRET_KEY_BASE=DUMMY RAILS_ENV=development bundle exec rails tailwindcss:build
 
 # Precompile assets
-RUN SECRET_KEY_BASE=DUMMY bundle exec rails assets:precompile
+RUN SECRET_KEY_BASE=DUMMY RAILS_ENV=development bundle exec rails assets:precompile
 # Final stage for app image
 FROM base
 

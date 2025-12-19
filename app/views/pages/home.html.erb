@@ -1,38 +1,38 @@
-<section class="min-h-screen flex flex-col">
-  <!-- メイン表示エリア -->
-  <div class="flex-1 flex items-center justify-center px-6">
-    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-      <!-- テキストエリア -->
-      <div>
-        <h1 class="text-4xl font-bold text-slate-800 mb-6 leading-tight">
-          学びを、毎日の習慣に
+<!-- ヒーローバナーセクション -->
+<section class="relative w-full">
+  <!-- ヒーローバナー画像エリア (背景として設定) -->
+  <div
+    class="hero-banner-bg w-full bg-cover bg-center"
+    style="background-image: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663255678493/HLeFsUgtipbeFaGk.png' );"
+  >
+    <!-- 高さをモバイル向けに調整: min-h-[40vh] に変更 -->
+    <div class="min-h-[40vh] md:min-h-[70vh] flex flex-col px-6 py-10">
+      
+      <!-- 上部: キャッチコピーのコンテナ -->
+      <!-- モバイルでは max-w-full に近い状態にし、pt-10で上からの余白を確保 -->
+      <div class="max-w-xl w-full text-left text-white pt-10 md:pt-20">
+        <!-- メインキャッチコピー: モバイルでは text-3xl から開始 -->
+        <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold mb-2 leading-tight drop-shadow-lg">
+          静かなる一歩が、<br>未来を変える。
         </h1>
 
-        <p class="text-slate-600 text-lg mb-8 leading-relaxed">
-          小さな積み重ねが、確かな成長につながります。<br>
-          今日の一歩を、ここから始めましょう。
+        <!-- サブコピー: モバイルでは text-base から開始 -->
+        <p class="text-base sm:text-xl md:text-2xl mb-6 drop-shadow-md">
+          あなたのための、静かな学びの場所がここにあります。
         </p>
       </div>
-
-      <!-- 画像エリア -->
-      <div class="flex justify-center">
-        <img
-          src="https://images.unsplash.com/photo-1523240795612-9a054b0db644"
-          alt="学習イメージ"
-          class="rounded-2xl shadow-md max-h-[420px] object-cover"
-        >
-      </div>
-    </div>
-  </div>
-
-  <!-- ボタンエリア -->
-  <div class="bg-white border-t border-slate-200 py-6">
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <%= link_to "新規登録", new_user_registration_path,
-                  class: "px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold hover:bg-emerald-600 transition" %>
-
-      <%= link_to "ログイン", new_user_session_path,
-                  class: "px-8 py-4 rounded-xl bg-blue-500 text-white text-lg font-semibold hover:bg-blue-600 transition" %>
+      
     </div>
   </div>
 </section>
+
+<!-- ボタンエリア (画像の外に配置) -->
+<div class="bg-white border-t border-slate-200 py-6">
+  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+    <%= link_to "新規登録", new_user_registration_path,
+                class: "px-8 py-4 rounded-xl bg-emerald-500 text-white text-lg font-semibold hover:bg-emerald-600 transition shadow-lg" %>
+
+    <%= link_to "ログイン", new_user_session_path,
+                class: "px-8 py-4 rounded-xl bg-blue-500 text-white text-lg font-semibold hover:bg-blue-600 transition shadow-lg" %>
+  </div>
+</div>

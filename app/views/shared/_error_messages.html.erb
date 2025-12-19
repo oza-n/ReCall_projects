@@ -1,0 +1,12 @@
+<% if object.errors.any? %>
+  <div class="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    <h3 class="font-bold mb-2">
+      <%= pluralize(object.errors.count, "件のエラー") %>が発生しました
+    </h3>
+    <ul class="list-disc list-inside">
+      <% object.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

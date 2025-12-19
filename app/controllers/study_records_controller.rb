@@ -2,10 +2,11 @@ class StudyRecordsController < ApplicationController
   before_action :set_study_record, only: %i[show edit update destroy review]
 
   def index
+    Rails.logger.debug "page: #{params[:page]}"
     @study_records = current_user.study_records
-                                 .includes(:review_logs)
                                  .order(studied_at: :desc)
                                  .page(params[:page])
+                                 .per(20)
   end
 
   # before_actionで設定済み
@@ -67,6 +68,6 @@ class StudyRecordsController < ApplicationController
   end
 
   def study_record_params
-    params.require(:study_record).permit(:content, :category, :studied_at)
+    params.require(:study_record).permit(:title, :content, :category, :studied_at)
   end
 end

@@ -1,6 +1,6 @@
 class StudyRecord < ApplicationRecord
   belongs_to :user
-  has_many :review_logs, dependent: :destroy
+  # has_many :review_logs, dependent: :destroy
 
   #=== 定数 レビューの上限 ===
   MAX_REVIEW_TIMES = 3
@@ -12,7 +12,7 @@ class StudyRecord < ApplicationRecord
     javascript: 'javascript',
     css: 'css',
     html: 'html',
-    other: 'other'
+    other: 'other' 
   }, prefix: true, scopes: true
 
   validates :content, presence: true
@@ -45,6 +45,21 @@ class StudyRecord < ApplicationRecord
   # === レビュー回数の上限 ===
   def review_complete?
     review_count >= MAX_REVIEW_TIMES
+  end
+
+  # === 表示用：次回復習日ラベル ===
+  def next_review_label
+    return '復習完了' if review_complete?
+    return '未復習' if review_count.nil?
+
+    next_review_at.strftime('%Y年%m月%d日')
+  end
+
+  def review_status
+    return :complete if review_complete?
+    return :overdue if next_review_at.present? && next_review_at <= Time.current
+
+    :scheduled
   end
 
   private
