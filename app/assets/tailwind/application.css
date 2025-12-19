@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@layer base {
+  /* ベーススタイルのカスタマイズ */
+}
+
+@layer components {
+  /* コンポーネントスタイルのカスタマイズ */
+}
+
+@layer utilities {
+  /* ユーティリティスタイルのカスタマイズ */
+}
