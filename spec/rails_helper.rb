@@ -69,5 +69,8 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   RSpec.configure do |config|
     config.include FactoryBot::Syntax::Methods
+
+    # 時間を固定するためのヘルパー
+    config.include ActiveSupport::Testing::TimeHelpers
   end
 end
