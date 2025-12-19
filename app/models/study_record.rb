@@ -12,7 +12,7 @@ class StudyRecord < ApplicationRecord
     javascript: 'javascript',
     css: 'css',
     html: 'html',
-    other: 'other'
+    other: 'other' 
   }, prefix: true, scopes: true
 
   validates :content, presence: true
