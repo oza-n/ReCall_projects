@@ -3,7 +3,6 @@ class StudyRecordsController < ApplicationController
 
   def index
     @study_records = current_user.study_records
-                                 .includes(:review_logs)
                                  .order(studied_at: :desc)
                                  .page(params[:page])
   end
