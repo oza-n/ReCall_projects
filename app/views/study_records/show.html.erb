@@ -1,0 +1,51 @@
+<div class="container">
+  <h1>学習記録詳細</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= @study_record.category_rails? ? 'Rails' : @study_record.category.humanize %></h5>
+      
+      <p><strong>学習日:</strong> <%= @study_record.studied_at.strftime('%Y年%m月%d日') %></p>
+      <p><strong>学習内容:</strong></p>
+      <div class="content">
+        <%= simple_format(@study_record.content) %>
+      </div>
+
+      <hr>
+
+      <!-- 復習情報 -->
+      <div class="review-info">
+        <p><strong>復習回数:</strong> <%= @study_record.review_count %> / <%= StudyRecord::MAX_REVIEW_TIMES %></p>
+      
+        <% if @study_record.last_reviewed_at.present? %>
+          <p><strong>最終復習日:</strong> <%= @study_record.last_reviewed_at.strftime('%Y年%m月%d日 %H:%M') %></p>
+        <% end %>
+
+        <% if @study_record.review_complete? %>
+          <div class="alert alert-success">
+            ✅ 復習完了！
+          </div>
+        <% elsif @study_record.next_review_at <= Time.current %>
+          <!-- 復習時期が来ている場合 -->
+          <div class="alert alert-warning">
+            ⏰ 復習しましょう！
+          </div>
+          <%= button_to '復習する', review_study_record_path(@study_record), method: :post, class: 'btn btn-primary' %>
+        <% else %>
+          <!-- 復習時期がまだ来ていない場合 -->
+          <p><strong>次回復習予定:</strong> <%= @study_record.next_review_at.strftime('%Y年%m月%d日') %></p>
+        <% end %>
+      </div>
+
+      <hr>
+
+      <!-- 編集・削除ボタン -->
+      <div class="actions">
+        <%= button_to '復習する', review_study_record_path(@study_record), method: :post, class: 'btn btn-primary' %>
+        <%= link_to '編集', edit_study_record_path(@study_record), class: 'btn btn-secondary' %>
+        <%= button_to '削除', study_record_path(@study_record), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+        <%= link_to '一覧に戻る', study_records_path, class: 'btn btn-outline-secondary' %>
+      </div>
+    </div>
+  </div>
+</div>
