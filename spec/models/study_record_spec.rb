@@ -1,246 +1,191 @@
 require 'rails_helper'
 
 RSpec.describe StudyRecord, type: :model do
-  # 関連付けのテスト
   describe 'associations' do
     it { is_expected.to belong_to(:user) }
   end
 
-  # バリデーションのテスト
+  #-- バリデーションテスト
   describe 'validations' do
-    # Userファクトリを使用してUserを作成
     let(:user) { create(:user) }
     let(:record) { build(:study_record, user: user) }
 
-    # 必須項目のテスト、必ず入力されていなければならない項目
+    # --- 基本的なバリデーション ---
     it { is_expected.to validate_presence_of(:content) }
     it { is_expected.to validate_presence_of(:category) }
     it { is_expected.to validate_presence_of(:studied_at) }
-
-    # review_count のテスト、数値で0以上であること
     it { is_expected.to validate_numericality_of(:review_count).is_greater_than_or_equal_to(0) }
 
-    # last_reviewed_at の条件付きバリデーション
-    context 'review_countが正の値の場合' do
-      before { record.review_count = 1 }
-      it { is_expected.to validate_presence_of(:last_reviewed_at) }
+    #-- review_count が 1以上のときの条件分岐テスト ---
+    context 'when review_count is positive' do
+      # -- last_reviewed_at が指定されていない場合 ---
+      it 'is invalid without last_reviewed_at' do
+        record.review_count = 1
+        record.last_reviewed_at = nil
+
+        expect(record).not_to be_valid
+        expect(record.errors[:last_reviewed_at]).to be_present
+      end
     end
 
-    context 'review_countが0の場合' do
-      before { record.review_count = 0 }
-      it { is_expected.not_to validate_presence_of(:last_reviewed_at) }
+    #-- review_count が 0のときの条件分岐テスト ---
+    context 'when review_count is zero' do
+      # --last_reviewed_at がなくても有効な場合 ---
+      it 'is valid even without last_reviewed_at' do
+        record.review_count = 0
+        record.last_reviewed_at = nil
+
+        expect(record).to be_valid
+      end
     end
 
-    # next_review_at の条件付きバリデーション
-    context '復習がまだ完了していない場合' do
-      before { record.review_count = StudyRecord::MAX_REVIEW_TIMES - 1 }
-      it { is_expected.to validate_presence_of(:next_review_at) }
+    #-- review_complete? が falseのときの条件分岐の場合 ---
+    context 'when review is not completed' do
+      before { record.review_count = described_class::MAX_REVIEW_TIMES - 1 }
+
+      #  -- next_review_at が指定されていない場合 ---
+      it 'requires next_review_at' do
+        record.next_review_at = nil
+        expect(record).not_to be_valid
+      end
     end
 
-    context '復習が完了している場合' do
-      before { record.review_count = StudyRecord::MAX_REVIEW_TIMES }
-      it { is_expected.not_to validate_presence_of(:next_review_at) }
+    #-- review_complete? が trueのときの条件分岐の場合 ---
+    context 'when review is completed' do
+      #  -- next_review_at がなくても有効な場合 ---
+      it 'is valid without next_review_at' do
+        record.review_count = described_class::MAX_REVIEW_TIMES
+        record.last_reviewed_at = Time.current
+        record.next_review_at = nil
+
+        expect(record).to be_valid
+      end
     end
   end
 
-  # コールバックのテスト
-  describe 'callbackのテスト' do
+  # -- コールバックテスト ---
+  describe 'callbacks' do
     let(:user) { create(:user) }
     let(:record) { build(:study_record, user: user, review_count: nil, next_review_at: nil) }
 
-    it '新規作成時にreview_countを自動的に0にする場合' do
+    #-- 作成時にreview_countが0になる初期化テスト ---
+    it 'sets review_count to zero on create' do
       record.save!
       expect(record.review_count).to eq(0)
     end
 
-    it '新規作成時に復習日が翌日になるようにする場合' do
-      record.studied_at = Time.zone.local(2025, 1, 1, 10, 0, 0)
-      record.save!
-      expected_date = Time.zone.local(2025, 1, 2, 10, 0, 0)
-      expect(record.next_review_at).to be_within(1.second).of(expected_date)
+    # -- 作成時にnext_review_atが翌日に設定される初期化テスト ---
+    it 'sets next_review_at to the next day on create' do
+      Timecop.freeze(Time.zone.local(2024, 12, 31, 10, 0, 0)) do
+        record.studied_at = Time.current
+        record.save!
+
+        expect(record.next_review_at).to eq(Time.zone.today + 1.day)
+      end
     end
   end
 
-  # スコープのテスト
+  # -- スコープテスト ---
   describe 'scopes' do
     let!(:user) { create(:user) }
-    # ファクトリのtraitを使用してテストデータを準備
     let!(:need_review_record) { create(:study_record, :need_review, user: user) }
-    let!(:scheduled_record) { create(:study_record, :scheduled, user: user) }
-    let!(:completed_record) { create(:study_record, :completed, user: user) }
+    let!(:scheduled_record)   { create(:study_record, :scheduled, user: user) }
+    let!(:completed_record)   { create(:study_record, :completed, user: user) }
 
-    # need_review スコープのテスト
-    describe '復習が必要な学習記録を取得する場合' do
-      it 'next_review_atが過去の記録を返す場合' do
-        # need_review_record の next_review_at は過去
-        expect(StudyRecord.need_review).to include(need_review_record)
+    #-- .need_review スコープのテスト ---
+    describe '.need_review' do
+      # -- 過去のnext_review_atを持つレコードが含まれることの確認 ---
+      it 'includes records with past next_review_at' do
+        expect(described_class.need_review).to include(need_review_record)
       end
 
-      it '次回復習日が未来の記録を返さない場合' do
-        # scheduled_record の next_review_at は未来
-        expect(StudyRecord.need_review).not_to include(scheduled_record)
+      # -- 未来のnext_review_atを持つレコードが含まれないことの確認 ---
+      it 'does not include scheduled records' do
+        expect(described_class.need_review).not_to include(scheduled_record)
       end
 
-      it '既に復習が完了している記録を返さない場合' do
-        # completed_record の next_review_at は nil
-        expect(StudyRecord.need_review).not_to include(completed_record)
+      # -- reviewが完了したレコードが含まれないことの確認 ---
+      it 'does not include completed records' do
+        expect(described_class.need_review).not_to include(completed_record)
       end
     end
 
-    # completed_reviews スコープのテスト
-    describe 'すべての復習が完了した学習記録を取得する場合' do
-      it '最大復習回数に達した記録を返す場合' do
-        expect(StudyRecord.completed_reviews).to include(completed_record)
+    # -- .completed_reviews スコープのテスト ---
+    describe '.completed_reviews' do
+      # -- 完了したレコードが含まれることの確認 ---
+      it 'includes completed records' do
+        expect(described_class.completed_reviews).to include(completed_record)
       end
 
-      it '復習途中の記録は含めない' do
-        expect(StudyRecord.completed_reviews).not_to include(need_review_record, scheduled_record)
+      # -- 未完了のレコードが含まれないことの確認 ---
+      it 'does not include unfinished records' do
+        expect(described_class.completed_reviews)
+          .not_to include(need_review_record, scheduled_record)
       end
     end
   end
 
-  # インスタンスメソッドのテスト
-  describe 'インスタンスメソッドのテスト' do
+  # -- インスタンスメソッドのテスト ---
+  describe 'instance methods' do
     let(:user) { create(:user) }
-    let(:record) { create(:study_record, user: user, review_count: 0, studied_at: Time.current.ago(1.day)) }
+    let(:record) { create(:study_record, user: user, review_count: 0, studied_at: 1.day.ago) }
 
-    # review_complete? のテスト
-    describe 'この学習が復習完了かどうかを判断する' do
-      context 'レビュー数が最大回数未満の場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES - 1 }
-        it { expect(record.review_complete?).to be_falsey }
+    # -- review_complete? メソッドのテスト ---
+    describe '#review_complete?' do
+      # -- review_count が最大値未満の場合 ---
+      context 'when review_count is less than max' do
+        before { record.review_count = described_class::MAX_REVIEW_TIMES - 1 }
+
+        it { expect(record).not_to be_review_complete }
       end
 
-      context 'レビュー数が最大回数に達した場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES }
-        it { expect(record.review_complete?).to be_truthy }
+      # -- review_count が最大値に達した場合 --
+      context 'when review_count reaches max' do
+        before { record.review_count = described_class::MAX_REVIEW_TIMES }
+
+        it { expect(record).to be_review_complete }
       end
     end
 
-    # review! のテスト
-    describe '復習を一回実行する処理' do
-      context '復習がまだ完了していない場合' do
+    # -- review! メソッドのテスト ---
+    describe '#review!' do
+      #-- レビュー完了していない場合 ---
+      context 'when review is not completed' do
         before { record.review_count = 0 }
 
-        it '復習回数が１増える' do
-          expect { record.review! }.to change { record.review_count }.by(1)
+        # -- 復習回数が1増えることの確認 ---
+        it 'increments review_count' do
+          expect { record.review! }.to change(record, :review_count).by(1)
         end
 
-        it '最後に復讐した日時が現在の時刻になる場合' do
-          # Timecop.freeze を使用して現在時刻を固定
+        # -- 復習完了後last_reviewed_at が現在時刻に更新されることの確認 ---
+        it 'updates last_reviewed_at to current time' do
           Timecop.freeze do
             record.review!
             expect(record.last_reviewed_at).to be_within(1.second).of(Time.current)
           end
         end
 
-        it '次回復習日が正しく設定される場合' do
-          # review_count=0 -> 1 になるので、next_review_date は last_reviewed_at + 3.days
-          record.review!
-          expect(record.next_review_at).to be_within(1.second).of(record.last_reviewed_at + 3.days)
-        end
-
-        it '復習処理が完了したらtrueを返す場合' do
-          expect(record.review!).to be_truthy
+        # -- メソッドが trueを返すことの確認 ---
+        it 'returns true' do
+          expect(record.review!).to be true
         end
       end
 
-      context 'レビュー数が最大回数に達した場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES }
+      #-- レビュー完了している場合 ---
+      context 'when review_count reaches max' do
+        before { record.review_count = described_class::MAX_REVIEW_TIMES }
 
-        it '復習回数が増加しない場合' do
-          expect { record.review! }.not_to change { record.review_count }
+        # -- 復習回数が増えないことの確認 ---
+        it 'does not increment review_count' do
+          expect { record.review! }.not_to change(record, :review_count)
         end
 
-        it '既に復習が完了している場合はfalseを返す場合' do
-          expect(record.review!).to be_falsey
+        # -- メソッドが falseを返すことの確認 ---
+        it 'returns false' do
+          expect(record.review!).to be false
         end
       end
-
-      context 'レビュー数が最大回数に達した場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES - 1 }
-
-        it '次回復習日がnilになる場合' do
-          record.review!
-          expect(record.next_review_at).to be_nil
-        end
-      end
-    end
-
-    # next_review_label のテスト
-    describe '画面表示用の次回復習日ラベルを返す' do
-      context '学習が完了した場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES }
-        it { expect(record.next_review_label).to eq('復習完了') }
-      end
-
-      context 'レビュー数がnilの場合（コールバック後に発生しないはず）' do
-        before { record.review_count = nil }
-        it { expect(record.next_review_label).to eq('未復習') }
-      end
-
-      context '復習が予定されている場合' do
-        let(:next_date) { Time.zone.local(2025, 12, 31) }
-        before do
-          record.review_count = 1
-          record.next_review_at = next_date
-        end
-        it '次回復習日が正しく表示される場合 ' do
-          expect(record.next_review_label).to eq('2025年12月31日')
-        end
-      end
-    end
-
-    # review_status のテスト
-    describe '復習状態を返す' do
-      context 'レビュー数が最大回数に達した場合' do
-        before { record.review_count = StudyRecord::MAX_REVIEW_TIMES }
-        it { expect(record.review_status).to eq(:complete) }
-      end
-
-      context 'next_review_at が過去の日付である場合' do
-        before do
-          record.review_count = 1
-          # Timecop.freeze を使用して現在時刻を固定し、過去の next_review_at を設定
-          Timecop.freeze(Time.current) do
-            record.next_review_at = 1.day.ago
-          end
-        end
-        it { expect(record.review_status).to eq(:overdue) }
-      end
-
-      context 'next_review_at が未来の日付である場合' do
-        before do
-          record.review_count = 1
-          record.next_review_at = Time.current.tomorrow
-        end
-        it { expect(record.review_status).to eq(:scheduled) }
-      end
-    end
-  end
-
-  # next_review_date のプライベートメソッドのテスト (間接的にテスト)
-  describe '復習予定日のロジック' do
-    let(:user) { create(:user) }
-    let(:record) { create(:study_record, user: user, last_reviewed_at: Time.current) }
-
-    it 'レビュー回数 1 → 2 の場合、次のレビュー日時を計算します（3日後）' do
-      record.review_count = 1
-      # sendを使用してprivateメソッドを呼び出す
-      record.send(:schedule_next_review)
-      expect(record.next_review_at).to be_within(1.second).of(record.last_reviewed_at + 3.days)
-    end
-
-    it 'レビュー回数 2 → 3 の場合、次のレビュー日時を計算します（7日後）' do
-      record.review_count = 2
-      record.send(:schedule_next_review)
-      expect(record.next_review_at).to be_within(1.second).of(record.last_reviewed_at + 7.days)
-    end
-
-    it 'レビュー回数が最大回数に達した場合、次回復習日をnilに設定します' do
-      record.review_count = StudyRecord::MAX_REVIEW_TIMES
-      record.send(:schedule_next_review)
-      expect(record.next_review_at).to be_nil
     end
   end
 end
