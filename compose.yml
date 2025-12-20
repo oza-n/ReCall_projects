@@ -28,6 +28,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      chrome:
+        condition: service_started
     environment:
       DATABASE_URL: postgresql://postgres:password@db:5432/app_development
       TZ: Asia/Tokyo
@@ -51,6 +53,12 @@ services:
       RAILS_ENV: development
     stdin_open: true
     tty: true
+
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    shm_size: 2g
 
 volumes:
   postgres_data:
