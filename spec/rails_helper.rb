@@ -1,5 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'shoulda/matchers'
+require 'timecop'
+
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -22,9 +25,8 @@ require 'rspec/rails'
 # of increasing the boot-up time by auto-requiring all files in the support
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
-#
 # Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
-
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
@@ -67,7 +69,31 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  RSpec.configure do |config|
-    config.include FactoryBot::Syntax::Methods
+
+  config.include FactoryBot::Syntax::Methods
+
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::ControllerHelpers, type: :controller
+
+  config.include Warden::Test::Helpers
+  config.before(:suite) { Warden.test_mode! }
+  config.after(:each) { Warden.test_reset! }
+
+  config.before(:each, type: :system) do
+    driven_by :remote_chrome
+    Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
+    Capybara.server_port = 3001
+    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
+  end
+
+  # 時間を固定するためのヘルパー
+  config.include ActiveSupport::Testing::TimeHelpers
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
   end
 end
