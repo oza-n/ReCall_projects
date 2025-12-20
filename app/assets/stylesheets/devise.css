@@ -1,0 +1,32 @@
+.devise-links-container {
+  /* リンクを縦に並べ、間隔を空ける */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* リンク間のスペース */
+  margin-top: 20px; /* フォームとの間にスペース */
+}
+
+.devise-link {
+  /* 各リンクのコンテナ */
+  text-align: center; /* リンクを中央寄せにする場合 */
+}
+
+.devise-link a {
+  /* リンク自体のスタイル */
+  text-decoration: none;
+  color: #007bff; /* 青色など、目立ちすぎない色 */
+  font-size: 0.9em; /* 少し小さめのフォント */
+}
+
+.devise-link a:hover {
+  text-decoration: underline;
+}
+
+.omniauth-links button {
+  /* OmniAuthボタンのスタイル */
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
