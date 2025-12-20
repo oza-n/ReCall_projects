@@ -65,7 +65,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
 
-    gem 'guard-rspec'
+  gem 'guard-rspec'
 end
 
 group :development do
@@ -85,5 +85,4 @@ group :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'timecop'
-  gem 'selenium-webdriver'
 end

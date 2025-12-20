@@ -3,27 +3,25 @@ require 'rails_helper'
 
 RSpec.describe 'StudyRecords', type: :system do
   let(:user) { create(:user) }
+  let(:valid_attributes) do
+    {
+      title: 'テストタイトル',
+      content: 'テスト内容',
+      category: 'ruby',
+      studied_at: Time.zone.today
+    }
+  end
+  let(:updated_attributes) do
+    {
+      title: '更新されたタイトル',
+      content: '更新内容',
+      category: 'rails',
+      studied_at: Time.zone.today
+    }
+  end
 
   before do
     sign_in user
-  end
-
-  let(:valid_attributes) do
-    {
-      title: "テストタイトル",
-      content: "テスト内容",
-      category: "ruby",
-      studied_at: Date.today
-    }
-  end
-
-  let(:updated_attributes) do
-    {
-      title: "更新されたタイトル",
-      content: "更新内容",
-      category: "rails",
-      studied_at: Date.today
-    }
   end
 
   # ==============================
@@ -63,7 +61,7 @@ RSpec.describe 'StudyRecords', type: :system do
   # ==============================
   describe '詳細画面' do
     let!(:study_record) do
-      create(:study_record, user: user, title: 'Railsの基礎', content: 'MVCについて学習した', category: 'rails', studied_at: Date.new(2025,1,1))
+      create(:study_record, user: user, title: 'Railsの基礎', content: 'MVCについて学習した', category: 'rails', studied_at: Date.new(2025, 1, 1))
     end
 
     it '内容が表示される' do
@@ -122,7 +120,7 @@ RSpec.describe 'StudyRecords', type: :system do
   # 復習ボタン表示
   # ==============================
   describe '復習機能' do
-    context '復習可能な学習記録' do
+    context 'when 復習可能な学習記録がある場合' do
       let!(:study_record) { create(:study_record, user: user, next_review_at: 1.day.ago, review_count: 0) }
 
       it '今すぐ復習ボタンが表示される' do
@@ -131,7 +129,7 @@ RSpec.describe 'StudyRecords', type: :system do
       end
     end
 
-    context '復習未到来の学習記録' do
+    context 'when 復習未到来の学習記録がある場合' do
       let!(:study_record) { create(:study_record, user: user, next_review_at: 3.days.from_now, review_count: 0) }
 
       it '下部の復習ボタンのみ表示される' do

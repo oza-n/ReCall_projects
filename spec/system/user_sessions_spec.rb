@@ -1,16 +1,16 @@
 require 'rails_helper'
 
-RSpec.describe "UserSessions", type: :system do
+RSpec.describe 'UserSessions', type: :system do
   let(:user) { create(:user) }
 
   describe 'ログイン' do
-    context '正しい認証情報でログインできる' do
+    context 'with 正しい認証情報' do
       it 'ログインできる' do
         visit new_user_session_path
 
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: user.password
-        
+
         click_button 'ログイン'
 
         expect(page).to have_content('ログインしました。')
@@ -19,13 +19,13 @@ RSpec.describe "UserSessions", type: :system do
       end
     end
 
-    context '誤った認証情報ではログインできない' do
+    context 'with 誤った認証情報' do
       it 'ログインフォームが再表示される' do
         visit new_user_session_path
 
         fill_in 'メールアドレス', with: user.email
         fill_in 'パスワード', with: 'wrong_password'
-        
+
         click_button 'ログイン'
 
         # ログインフォームが再表示されることを確認
@@ -43,9 +43,9 @@ RSpec.describe "UserSessions", type: :system do
 
     it 'ログアウトできる' do
       expect(page).to have_content("ようこそ、 #{user.name}さん")
-      
+
       click_link 'ログアウト'
-      
+
       expect(page).to have_content('ログアウトしました。')
       expect(current_path).to eq(root_path)
       expect(page).to have_link('ログイン', href: new_user_session_path)
