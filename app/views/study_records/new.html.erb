@@ -1,7 +1,23 @@
-<h1>学習新規作成</h1>
+<!-- フォーム全体を中央に配置し、最大幅を設定 -->
+<div class="flex justify-center bg-gray-50 p-4 py-10 min-h-screen">
+  <div class="w-full max-w-3xl">
 
-<%= render 'form', study_record: @study_record, submit_label: '作成する' %>
+    <!-- ページタイトルと戻るボタンのヘッダー -->
+    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-200">
+      <h1 class="text-3xl font-bold text-slate-900">
+        学習新規作成
+      </h1>
+      
+      <!-- 一覧へ戻るボタン (学習記録詳細ページとデザインを統一) -->
+      <%= link_to '← 一覧へ戻る',
+            study_records_path,
+            class: "inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition shadow-sm" %>
+    </div>
 
-<div>
-  <%= link_to '一覧へ戻る', study_records_path %>
+    <!-- フォームコンテナ -->
+    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+      <%= render 'form', study_record: @study_record, submit_label: '作成する' %>
+    </div>
+
+  </div>
 </div>

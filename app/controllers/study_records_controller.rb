@@ -2,7 +2,6 @@ class StudyRecordsController < ApplicationController
   before_action :set_study_record, only: %i[show edit update destroy review]
 
   def index
-    Rails.logger.debug "page: #{params[:page]}"
     @study_records = current_user.study_records
                                  .order(studied_at: :desc)
                                  .page(params[:page])

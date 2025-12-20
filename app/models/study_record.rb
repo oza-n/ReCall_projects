@@ -1,6 +1,5 @@
 class StudyRecord < ApplicationRecord
   belongs_to :user
-  # has_many :review_logs, dependent: :destroy
 
   #=== 定数 レビューの上限 ===
   MAX_REVIEW_TIMES = 3
@@ -15,6 +14,7 @@ class StudyRecord < ApplicationRecord
     other: 'other'
   }, prefix: true, scopes: true
 
+  validates :title, presence: true
   validates :content, presence: true
   validates :category, presence: true
   validates :studied_at, presence: true

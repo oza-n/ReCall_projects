@@ -1,0 +1,133 @@
+[33mb19710a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/create_study_record_RSpec[m[33m)[m ログイン・ログアウト機能のSystemスペックを実装
+[33m0380dd0[m Add: StudyRecordのsystemをRSpecを記述した
+[33m4590682[m Add: Railsアプリケーションを実行しながらtestが行えるようにlocalhostを変更した
+[33med71875[m Add: gem guard-rspecを追加
+[33m135445c[m Add: フラッシュメッセージを追加
+[33m93300b4[m Fix: ヘッダーのログイン中のユーザー名の表示を変更
+[33mc1ec970[m Add: deviseのリンクを整形
+[33m9ab56c7[m Add: UserModelのRSpecを記述
+[33m7bc64a0[m Add: StudyRecordModelのRSpecを実装
+[33m9bcb645[m Fix: 学習状態を細分化した
+[33m5463f63[m Add:   gem timecopを追加
+[33m857fbc6[m Add: study_record_modelのRSpecを生成
+[33m78818a6[m Add: factories_users,factories_study_recordsを生成
+[33m4c20aec[m Fix: Rubocopを実行
+[33mce7ebcb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Merge pull request #53 from oza-n/feature/create_StudyRecordsViews
+[33m5469608[m[33m ([m[1;31morigin/feature/create_StudyRecordsViews[m[33m, [m[1;32mfeature/create_StudyRecordsViews[m[33m)[m Add: パスワードリセット時no
+[33m5eca9fd[m Add: review_statusによる学習状態を追加
+[33mcced937[m Add: Deviseで生成したviewを編集
+[33md0da450[m Fix: gem_devise-i18nの修正を行った
+[33m37be71f[m Add: gem_devise_i18nを導入
+[33m7dbd4a5[m Add: 復習完了後に学習一覧画面から戻るとエラーが発生する問題を解決
+[33mf8b38fe[m Add: ページネーションにて1ページに学習記録表示上限を20件に設定
+[33m5eec8fe[m Fix: study_records_viewsのHTML,CSSの変更
+[33mcb69585[m Add: gem_kaminari-railsを追加
+[33mb49f2af[m Fix: 学習詳細画面を最低限のUIでまとめた
+[33me717750[m Add: Dockerを開発と本番環境に分割した
+[33m42b36e5[m Add: 学習フォームと編集ページのUIを変更
+[33m3f313de[m Add: 学習詳細を見れるようにした
+[33m2d672c7[m Fix: tailwindの記述を修正
+[33m6aea356[m Fix: review_logsアソシエーションを使わないのでindexアクションを修正した
+[33mb487713[m Add: review_logsアソシエーションを削除
+[33m9c7d570[m Add: titleをストロングパラメータに追加
+[33m4ecd13a[m Add: フォームを最低限の形にした
+[33m7dc91f0[m Add: エラーの部分テンプレートを作成
+[33m40b81fe[m Add: よく使うフォントを追加
+[33m63af33b[m Add: StudyRecordマイグレーションにtitleカラムを追加
+[33m72159f8[m Add: study_record_viewファイルを生成
+[33mf51a2f1[m Add: 最低限のviewを作成
+[33m4645d3e[m Add: gem_kaminariを追加
+[33m319725f[m index.html.erbファイルを生成
+[33mfcd541d[m Merge pull request #52 from oza-n/feature/create_StudyRecordController
+[33m7c8f2a1[m[33m ([m[1;31morigin/feature/create_StudyRecordController[m[33m, [m[1;32mfeature/create_StudyRecordController[m[33m)[m Fix: Rubocopを実行
+[33me7f01b6[m Add: reviewアクションの例外処理を生成
+[33md1fb7b4[m Add: ログイン後の遷移されるページを設定
+[33m6c809dc[m Add: StudyRecordのルーティングを生成
+[33me2e7791[m Add: StudyRecordsControllerの生成
+[33m5d74399[m Merge pull request #51 from oza-n/feature/study_record
+[33m04200f0[m[33m ([m[1;31morigin/feature/study_record[m[33m, [m[1;32mfeature/study_record[m[33m)[m Add: rails標準のenumを実装
+[33m47854b3[m Fix: コールバックの処理を変更
+[33mf81ff4d[m Fix: マイグレーションの誤字を変更し、再度作成
+[33m1344035[m deleted: StudyRecordsのマイグレーションを削除
+[33md710695[m Add: validates,scope,学習復習日の内部処理を記述
+[33m89f0b70[m Add: 学習記録のロジックを記述
+[33m06f0e08[m Add: ファクトリボットに情報を追加
+[33m1ee8cde[m chore: MinitestからRSpecへ移行
+[33m03babf9[m Add: RSpecのgemを追加
+[33m595a0c5[m Add: Study_recordsマイグレーションを生成
+[33m0d8d8dd[m Add: モデルの生成
+[33m305f2b7[m Merge pull request #50 from oza-n/feature/Devise_UI_tailwind
+[33m55c7e16[m[33m ([m[1;31morigin/feature/Devise_UI_tailwind[m[33m, [m[1;32mfeature/Devise_UI_tailwind[m[33m)[m Fix: Rubocopの実行
+[33m868baa1[m Fix: 最低限のviews
+[33m69c46ae[m Add: Userモデルにvalidates :nameを追加
+[33m1c828b7[m Add: トップページとLayoutsの整形
+[33m896fcb9[m Add: Tailwind用の入口CSSと設置ファイルを追加した
+[33m3a15d9d[m Merge pull request #49 from oza-n/feature/Rubocop,RSpec_install
+[33m3e925f2[m[33m ([m[1;31morigin/feature/Rubocop,RSpec_install[m[33m, [m[1;32mfeature/Rubocop,RSpec_install[m[33m)[m Fix: rubocopを実行
+[33m42914e4[m Add: rubocopのルールを設定
+[33mcf85939[m Add: rubocop,RSpecのinstallを実行
+[33maa93c22[m Merge pull request #48 from oza-n/fix/render-setup
+[33m87ee806[m[33m ([m[1;31morigin/fix/render-setup[m[33m, [m[1;32mfix/render-setup[m[33m)[m Add: build時ni
+[33meffab0a[m Add: Tailwindのアセットパイプラインにビルドを含める
+[33m173bf37[m Fix: Dockerfileをビルドだけに専念するように変更
+[33m158607d[m Fix: TailwindCSSを削除した
+[33md3e3c25[m Add: buildステージにTailwindCSSを追加
+[33mb3cc28b[m Fix: cluster_modeからsingle_modeに変更
+[33mb299735[m Fix: docker buildの実行の不具合を変更
+[33mc898f4b[m Merge pull request #47 from oza-n/feature/gemdevise_install
+[33m99896d0[m[33m ([m[1;31morigin/feature/gemdevise_install[m[33m, [m[1;32mfeature/gemdevise_install[m[33m)[m Add: ログアウト後の遷移ページを設定
+[33m4e6f380[m Fix: htmlを整形
+[33mf037839[m Add: リンクの表記を日本語に変換
+[33mbcdc45c[m Add: トップページのみ誰でも操作できるようにした
+[33ma2e15d3[m Fix: 新規登録の画面を整形
+[33m311cdde[m Add: layouts/deviseの生成
+[33mc270a5d[m Fix: Layoutsの遷移の記述方法を変更
+[33mac7391e[m Fix: 不要なものを編集
+[33m914168f[m Add: layoutsの導線を追加
+[33md49c3da[m Add: devise用のlayoutsを生成
+[33ma789613[m Add: Userのストロングパラメータを追加
+[33m241974e[m Add: Userテーブルにnameカラムを追加
+[33m7fcb1c2[m Add: 新規登録、ログインの導線を追加
+[33m625c393[m Add: 新規登録、ログイン画面の整形
+[33mad63825[m Add: deviseびゅ
+[33mb8df458[m Add: deviseコマンドで自動生成された状態を保存
+[33mdfba9a5[m Add: deviseのルーティングを生成
+[33ma1a0a07[m Fix: ディレクトリの名前を変更
+[33m2234951[m Add: Userテーブルのマイグレーションの実行
+[33md234144[m Add: Deviseを使ったUserモデルを作成
+[33m29ed0e3[m Add: deviseの初期セットアップを実行
+[33mcd7324d[m Fix: ホームページのディレクトリ名を変更
+[33m205285b[m Merge pull request #46 from oza-n/feature/render-setup
+[33m9ceabbe[m[33m ([m[1;31morigin/feature/render-setup[m[33m)[m Fix: 二重実行をなくし責務の分割をした
+[33m1560c32[m Fix: Dockerfile CMD
+[33md9972ce[m Fix: 本番環境の設定にてデフォルト値の設定をした
+[33m1e9b061[m Fix: 混雑しているものをまとめた
+[33ma9c4c91[m Fix: ワーカー数を2に固定
+[33m0a3cdd0[m Add: create_toppages
+[33m1c4a582[m Fix/Puma configuration: remove port in favor of bind
+[33mfd7eb42[m Fix: CMDno
+[33m8ea2dca[m Add: CMDwo
+[33m7d8bc1d[m Add: CMDの追加
+[33mfc24be9[m Add: production_databaseのURLを記述
+[33ma6f0a4d[m Merge pull request #45 from oza-n/fix/README.md
+[33mb13156f[m[33m ([m[1;31morigin/fix/README.md[m[33m, [m[1;32mfix/README.md[m[33m)[m Fix: README.mdの修正
+[33m93a4dd3[m Merge pull request #44 from oza-n/feature/initial-setup
+[33m99baa7a[m[33m ([m[1;31morigin/feature/initial-setup[m[33m, [m[1;32mfeature/initial-setup[m[33m)[m Add: Railsサーバーを0.0.0.0でバインドしました
+[33m2440cd5[m Add: Tailwind付きRailsプロジェクトを作成
+[33mc09decf[m Fix: Railsのバージョンを変更
+[33mb2f51cb[m Fix: tailwindを導入するためにNode.js,yarnを追加記述
+[33m44da6ee[m Fix: tailwindを導入するためのNode.js,yarnを追加
+[33m4009734[m Add: 各バージョンを記述
+[33me339466[m Fix: バージョン変更を記述
+[33m29322ee[m Add: dockerの環境を構築
+[33m5445254[m Add: 開発環境のファイルの作成
+[33m528c540[m[33m ([m[1;31morigin/feature/issue-index[m[33m)[m Merge pull request #3 from oza-n/feature/ER_diagram
+[33m9737df2[m[33m ([m[1;31morigin/feature/ER_diagram[m[33m)[m Add: ER図を生成,URLをREADME.mdに添付
+[33mea0c77f[m Merge pull request #2 from oza-n/feature/screen-transition-diagram
+[33ma336b07[m[33m ([m[1;31morigin/feature/screen-transition-diagram[m[33m)[m Add: 画面遷移のフッターを追加
+[33m7f72cc9[m Merge: mainブランチの最新状態を取り込み
+[33m887aadb[m Merge pull request #1 from oza-n/feature/create-readme
+[33m98a2684[m[33m ([m[1;31morigin/feature/create-readme[m[33m)[m Fix: プルリクエストで通ったREADME.mdをNotionのバックアップから復元
+[33mf339a0e[m Add: 画面遷移図を作成
+[33md8c7aa8[m Add: MVP版README.mdを作成
+[33m215363b[m Initial commit
