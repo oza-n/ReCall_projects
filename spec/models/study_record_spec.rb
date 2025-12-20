@@ -94,6 +94,10 @@ RSpec.describe StudyRecord, type: :model do
 
     #-- .need_review スコープのテスト ---
     describe '.need_review' do
+  let!(:need_review_record) { create(:study_record, :need_review) }
+  let!(:scheduled_record)   { create(:study_record, :scheduled) }
+  let!(:completed_record)   { create(:study_record, :completed) }
+
       # -- 過去のnext_review_atを持つレコードが含まれることの確認 ---
       it 'includes records with past next_review_at' do
         expect(described_class.need_review).to include(need_review_record)

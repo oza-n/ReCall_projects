@@ -25,7 +25,7 @@ class StudyRecord < ApplicationRecord
   before_validation :initialize_review_schedule, on: :create
 
   scope :not_completed, -> { where('review_count < ?', MAX_REVIEW_TIMES) }
-  scope :need_review, -> { not_completed.where('next_review_at <= ?', Date.current) }
+  scope :need_review, -> { not_completed.where('next_review_at <= ?', Time.current) }
   scope :completed_reviews, -> { where(review_count: MAX_REVIEW_TIMES) }
 
   # === 公開API（外から呼んでいい操作） ===
