@@ -63,6 +63,20 @@ class StudyRecord < ApplicationRecord
     :scheduled
   end
 
+  # ===== i18n関連メソッド =====
+
+  # === セレクトボックス用: カテゴリの選択肢を日本語で返す ===
+  def self.category_options
+    categories.keys.map do |k|
+      [I18n.t("activerecord.enums.study_record.category.#{k}"), k.to_s]
+    end
+  end
+
+  # === 表示用: 個別レコードのカテゴリを日本語に変換 ===
+  def category_i18n
+    I18n.t("activerecord.enums.study_record.category.#{category}")
+  end
+
   private
 
   # === 初期化 ===

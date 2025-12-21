@@ -17,6 +17,15 @@ ja:
         studied_at: "学習日"
         created_at: "作成日時"
         updated_at: "更新日時"
+    enums:
+      study_record:
+        category:
+          rails: "Rails"
+          ruby: "Ruby"
+          javascript: "JavaScript"
+          css: "CSS"
+          html: "HTML"
+          other: "その他"
     errors:
       messages:
         record_invalid: "バリデーションに失敗しました: %{errors}"
