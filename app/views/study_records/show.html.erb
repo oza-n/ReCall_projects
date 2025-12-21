@@ -11,7 +11,7 @@
     <p class="flex items-center">
       <span class="font-medium text-slate-800 mr-2">📚 カテゴリ:</span>
       <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs font-medium">
-        <%= @study_record.category_rails? ? 'Rails' : @study_record.category.humanize %>
+        <%= record.category_i18n %>
       </span>
     </p>
 
